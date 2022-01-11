@@ -110,6 +110,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     tree=fIn.Get('data')
     totalEntries=tree.GetEntriesFast()
 
+    totalEntries = 1000
     for i in xrange(0,totalEntries):
 
         tree.GetEntry(i)
@@ -190,13 +191,17 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
 
                 #count selected jet
                 nJets +=1
-
+                
                 #save P4 for b-tagged jet
                 if tree.Jet_CombIVF[ij]>0.8484: # medium cut
+                    w_jec_up =  1 + tree.Jet_uncs[ij*27+iJEC]
+                    w_jec_down = 1 - tree.Jet_uncs[ij*27+iJEC]
+
                     nBtags+=1
                     taggedJetsP4.append(jp4)
                     taggedJetsP4_up.append(jp4*w_jec_up)
                     taggedJetsP4_down.append(jp4*w_jec_down)
+                    
                     if abs(tree.Jet_flavour[ij]) == 5:
                         matchedJetsP4.append(jp4)
         
@@ -207,8 +212,10 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             ## fill JEC histograms
             for ij in xrange(0,len(taggedJetsP4)):
                 if ij>1 : break
-                # if iJEC > 0 :
-                    #fill JEC histograms
+                if iJEC == 3 :
+                    # fill JEC histograms
+                    histos["bjetenls_jec_unc_up"].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                    histos["bjetenls_jec_unc_down"].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
                 # else :
                     #fill JER histogram
 
@@ -219,7 +226,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             if ij>1 : break
             #fill other histograms (nominal and weight based)
 
-            #histos['bjetenls_nominal'].Fill(....)
+            histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
 
 
     fIn.Close()
