@@ -110,7 +110,7 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     tree=fIn.Get('data')
     totalEntries=tree.GetEntriesFast()
 
-    totalEntries = 1000
+    # totalEntries = 1000
     for i in xrange(0,totalEntries):
 
         tree.GetEntry(i)
