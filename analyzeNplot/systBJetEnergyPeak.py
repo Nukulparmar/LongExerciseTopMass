@@ -218,7 +218,8 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
                     histos["bjetenls_jec_unc_down"].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
                 # else :
                     #fill JER histogram
-
+                    histos['bjetenls_jer_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                    histos['bjetenls_jer_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
                 
         #save P4 for b-tagged jet
         #use up to two leading b-tagged jets
@@ -227,7 +228,10 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             #fill other histograms (nominal and weight based)
 
             histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
-
+            histos['bjetenls_lep_eff_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[1]/taggedJetsP4[ij].E())
+            histos['bjetenls_lep_eff_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[2]/taggedJetsP4[ij].E())
+            histos['bjetenls_pileup_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[3]/taggedJetsP4[ij].E())
+            histos['bjetenls_bjes_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[4]/taggedJetsP4[ij].E()) 
 
     fIn.Close()
 
