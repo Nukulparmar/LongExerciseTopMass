@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 import optparse
@@ -16,31 +15,33 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
     print '...analysing %s' % inFileURL
     
     #book some histograms for systematic samples
+
+
     histos={ 
         # nominal (for xcheck)
         'bjetenls_nominal':ROOT.TH1F('bjetenls_nominal',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
         # JER
-        'bjetenls_jer_up':ROOT.TH1F('bjetenls_jer_up',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jer_down':ROOT.TH1F('bjetenls_jer_down',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        # 'bjetenls_jer_up':ROOT.TH1F('bjetenls_jer_up',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        # 'bjetenls_jer_down':ROOT.TH1F('bjetenls_jer_down',';log(E);  1/E dN_{b jets}/dlog(E)',20,3.,7.),
 
-        # JEC: uncorrelated group
-        'bjetenls_jec_unc_up':ROOT.TH1F('bjetenls_jec_unc_up','bjetenls_jec_unc_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
-        'bjetenls_jec_unc_down':ROOT.TH1F('bjetenls_jec_unc_down','bjetenls_jec_unc_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        # # JEC: uncorrelated group
+        # 'bjetenls_jec_1_up':ROOT.TH1F('bjetenls_jec_unc_up','bjetenls_jec_unc_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
+        # 'bjetenls_jec_1_down':ROOT.TH1F('bjetenls_jec_unc_down','bjetenls_jec_unc_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
             
 
-        # JEC: in-situ correlation group
-        'bjetenls_jec_in_situ_up':ROOT.TH1F('bjetenls_jec_in_situ_up','bjetenls_jec_in_situ_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
-        'bjetenls_jec_in_situ_down':ROOT.TH1F('bjetenls_jec_in_situ_down','bjetenls_jec_in_situ_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
-        # JEC: inter-calibration
-        'bjetenls_jec_in_calib_up':ROOT.TH1F('bjetenls_jec_in_calib_up','bjetenls_jec_in_calib_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
-        'bjetenls_jec_in_calib_down':ROOT.TH1F('bjetenls_jec_in_calib_down','bjetenls_jec_in_calib_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
-        # JEC: pile-up
-        'bjetenls_jec_pileup_up':ROOT.TH1F('bjetenls_jec_pileup_up','bjetenls_jec_pileup_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
-        'bjetenls_jec_pileup_down':ROOT.TH1F('bjetenls_jec_pileup_down','bjetenls_jec_pileup_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
-        # JEC: flavour
-        'bjetenls_jec_flavor_up':ROOT.TH1F('bjetenls_jec_flavor_up','bjetenls_jec_flavor_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
-        'bjetenls_jec_flavor_down':ROOT.TH1F('bjetenls_jec_flavor_down','bjetenls_jec_flavor_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # # JEC: in-situ correlation group
+        # 'bjetenls_jec_3_up':ROOT.TH1F('bjetenls_jec_in_situ_up','bjetenls_jec_in_situ_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # 'bjetenls_jec_3_down':ROOT.TH1F('bjetenls_jec_in_situ_down','bjetenls_jec_in_situ_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # # JEC: inter-calibration
+        # 'bjetenls_jec_16_up':ROOT.TH1F('bjetenls_jec_in_calib_up','bjetenls_jec_in_calib_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # 'bjetenls_jec_16_down':ROOT.TH1F('bjetenls_jec_in_calib_down','bjetenls_jec_in_calib_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # # JEC: pile-up
+        # 'bjetenls_jec_20_up':ROOT.TH1F('bjetenls_jec_pileup_up','bjetenls_jec_pileup_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # 'bjetenls_jec_20_down':ROOT.TH1F('bjetenls_jec_pileup_down','bjetenls_jec_pileup_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # # JEC: flavour
+        # 'bjetenls_jec_26_up':ROOT.TH1F('bjetenls_jec_flavor_up','bjetenls_jec_flavor_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
+        # 'bjetenls_jec_26_down':ROOT.TH1F('bjetenls_jec_flavor_down','bjetenls_jec_flavor_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.), 
 
         # bJES
         'bjetenls_bjes_up':ROOT.TH1F('bjetenls_bjes_up','bjetenls_bjec_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
@@ -98,8 +99,12 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
         # Color reconnection unc 
         'bjetenls_color_reconnect_QCD_up':ROOT.TH1F('bjetenls_color_reconnect_QCD_up','bjetenls_color_reconnect_QCD_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
         'bjetenls_color_reconnect_QCD_down':ROOT.TH1F('bjetenls_color_reconnect_QCD_down','bjetenls_color_reconnect_QCD_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.),
-
+        
         }
+    for i in range(27):
+            histos['bjetenls_jec_'+str(i)+'_up'] = ROOT.TH1F('bjetenls_jec_'+str(i)+'_up','bjetenls_jec_'+str(i)+'_up;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.)
+            histos['bjetenls_jec_'+str(i)+'_down'] = ROOT.TH1F('bjetenls_jec_'+str(i)+'_down','bjetenls_jec_'+str(i)+'_down;log(E);1/E dN_{b jets}/dlog(E)',20,3.,7.)
+
 
     for key in histos:
         histos[key].Sumw2()
@@ -212,14 +217,14 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             ## fill JEC histograms
             for ij in xrange(0,len(taggedJetsP4)):
                 if ij>1 : break
-                if iJEC == 3 :
+                
                     # fill JEC histograms
-                    histos["bjetenls_jec_unc_up"].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
-                    histos["bjetenls_jec_unc_down"].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                histos["bjetenls_jec_"+str(iJEC)+"_up"].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                histos["bjetenls_jec_"+str(iJEC)+"_down"].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
                 # else :
                     #fill JER histogram
-                    histos['bjetenls_jer_up'].Fill(ROOT.TMath.Log(taggedJetsP4_up[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
-                    histos['bjetenls_jer_down'].Fill(ROOT.TMath.Log(taggedJetsP4_down[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+                    # iJEC == 0 is the JER  
+
                 
         #save P4 for b-tagged jet
         #use up to two leading b-tagged jets
@@ -228,10 +233,15 @@ def runBJetEnergyPeak(inFileURL, outFileURL, xsec=None):
             #fill other histograms (nominal and weight based)
 
             histos['bjetenls_nominal'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
+            histos['bjetenls_tpt_reweight_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[5]/taggedJetsP4[ij].E())
+            histos['bjetenls_tpt_reweight_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
             histos['bjetenls_lep_eff_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[1]/taggedJetsP4[ij].E())
             histos['bjetenls_lep_eff_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[2]/taggedJetsP4[ij].E())
             histos['bjetenls_pileup_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[3]/taggedJetsP4[ij].E())
+            histos['bjetenls_pileup_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[4]/taggedJetsP4[ij].E())
             histos['bjetenls_bjes_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[4]/taggedJetsP4[ij].E()) 
+            #histos['bjetenls_tpt_reweight_up'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[6]/taggedJetsP4[ij].E())
+            #histos['bjetenls_tpt_reweight_down'].Fill(ROOT.TMath.Log(taggedJetsP4[ij].E()),evWgt[0]/taggedJetsP4[ij].E())
 
     fIn.Close()
 

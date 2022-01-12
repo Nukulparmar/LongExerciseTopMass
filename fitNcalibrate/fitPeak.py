@@ -176,6 +176,7 @@ def main():
            parser.add_option('-d', '--isData',  action = 'store_true',   dest='isData')
            parser.add_option('-i', '--inDir',   dest='inDir',   help='input directory',          default='nominal',    type='string')
            parser.add_option('-j', '--json',    dest='json',    help='json with list of files',  default="../analyzeNplot/data/samples_Run2015_25ns.json", type='string')
+           parser.add_option('--hist', dest='hist', help='histogram', default="bjetenls_jec_1_up", type='string' )
            parser.add_option('-l', '--lumi',    dest='lumi' ,   help='lumi to print out',        default=2444.,        type=float)
            (opt, args) = parser.parse_args()
            
@@ -188,7 +189,7 @@ def main():
                for tag,sample in jsonList: 
                    if not sample[3] in samplesList and not "Data" in sample[3]:
                        samplesList.append(sample[3])
-
+            
            # Open the root file
            fiName = "../analyzeNplot/"+opt.inDir+"/plots/plotter.root"
            print "... processing", fiName
@@ -198,18 +199,24 @@ def main():
            res = ROOT.TFile(fiName, "read")
 
            #Get the histogram 
-           hName = "bjetenls/"   
+        #    hName = "bjetenls_jec_1_up/"
+           hName1 = opt.hist 
            if opt.isData is True:
-               hName = hName + "bjetenls"
+            #    hName = hName + "bjetenls_jec_1_up"
+                hName = hName1 + '/' + hName1
            else:
-               hName = hName + "bjetenls_" + samplesList[0]
+            #    hName = hName + "bjetenls_jec_1_up_" + samplesList[0]
+                hName = hName1 + '/' + hName1+ '_' + samplesList[0]
+           
            histo = res.Get(str(hName))
            histo.SetDirectory(0)
            if opt.isData is not True:
                for sampleInfo in samplesList:
                    if sampleInfo is not samplesList[0]: 
-                       histo.Add(res.Get(str("bjetenls/bjetenls_"+sampleInfo)).Clone());
-
+                    #    histo.Add(res.Get(str("bjetenls_jec_1_up/bjetenls_jec_1_up_"+sampleInfo)).Clone());
+                        print(hName1 + '/' + hName1 + '_' + sampleInfo)
+                        histo.Add(res.Get(hName1+ '/' + hName1 + '_' + sampleInfo).Clone())
+                       
            # Create the output directory
            if not os.path.isdir(opt.inDir):
                os.mkdir(opt.inDir)
