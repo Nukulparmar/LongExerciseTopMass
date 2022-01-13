@@ -176,7 +176,7 @@ def main():
            parser.add_option('-d', '--isData',  action = 'store_true',   dest='isData')
            parser.add_option('-i', '--inDir',   dest='inDir',   help='input directory',          default='nominal',    type='string')
            parser.add_option('-j', '--json',    dest='json',    help='json with list of files',  default="../analyzeNplot/data/samples_Run2015_25ns.json", type='string')
-           parser.add_option('--hist', dest='hist', help='histogram', default="bjetenls_jec_1_up", type='string' )
+           parser.add_option('--hist', dest='hist', help='histogram', default="bjetenls_nominal", type='string' )
            parser.add_option('-l', '--lumi',    dest='lumi' ,   help='lumi to print out',        default=2444.,        type=float)
            (opt, args) = parser.parse_args()
            
@@ -207,15 +207,16 @@ def main():
            else:
             #    hName = hName + "bjetenls_jec_1_up_" + samplesList[0]
                 hName = hName1 + '/' + hName1+ '_' + samplesList[0]
-           
+           print(hName)
            histo = res.Get(str(hName))
+           print(histo)
            histo.SetDirectory(0)
            if opt.isData is not True:
                for sampleInfo in samplesList:
                    if sampleInfo is not samplesList[0]: 
                     #    histo.Add(res.Get(str("bjetenls_jec_1_up/bjetenls_jec_1_up_"+sampleInfo)).Clone());
                         print(hName1 + '/' + hName1 + '_' + sampleInfo)
-                        histo.Add(res.Get(hName1+ '/' + hName1 + '_' + sampleInfo).Clone())
+                        histo.Add(res.Get(str(hName1+ '/' + hName1 + '_' + sampleInfo)).Clone())
                        
            # Create the output directory
            if not os.path.isdir(opt.inDir):
@@ -224,7 +225,12 @@ def main():
            # Calculate the energy peak position in the big MC sample
            Eb,DEb = gPeak(h=histo,inDir=opt.inDir,isData=opt.isData,lumi=opt.lumi)
            print "<E_{b}> = (%3.2f #pm %3.2f) GeV" % (Eb,DEb)
-
+           Eb_th = (Eb - 29.13)/0.5382
+           print(Eb_th) 
+           mw = 80.385
+           mb = 4.18
+           mt = Eb_th + ROOT.TMath.Sqrt(mw**2 - mb**2 + Eb_th**2)
+           print(mt)
            res.Close()
                
 if __name__ == "__main__":
